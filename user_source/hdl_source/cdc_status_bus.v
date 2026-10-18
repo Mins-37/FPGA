@@ -1,9 +1,9 @@
 // Bundled-data toggle/ack handshake. Source data stays stable until acknowledged.
-module cdc_status_bus(
- input wire src_clk,input wire src_rst,input wire [7:0] src_data,
- input wire dst_clk,input wire dst_rst,output reg [7:0] dst_data
+module cdc_status_bus #(parameter WIDTH=8)(
+ input wire src_clk,input wire src_rst,input wire [WIDTH-1:0] src_data,
+ input wire dst_clk,input wire dst_rst,output reg [WIDTH-1:0] dst_data
 );
- reg [7:0] held;
+ reg [WIDTH-1:0] held;
  reg req,ack;
  reg [1:0] ack_sync;
  reg [2:0] req_sync;

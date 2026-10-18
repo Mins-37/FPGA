@@ -1,0 +1,77 @@
+[
+  {
+    "name": "activefat",
+    "passed": true,
+    "output": "PASS: FAT32 count 5, 33 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:63: $finish called at 604920000 (1ps)\n"
+  },
+  {
+    "name": "bad_index",
+    "passed": true,
+    "output": "PASS: bad file chain rejected, catalogue preserved, code 5\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:59: $finish called at 20830000 (1ps)\n"
+  },
+  {
+    "name": "badboot",
+    "passed": true,
+    "output": "PASS: invalid FAT32 volume rejected, code 2\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:53: $finish called at 20630000 (1ps)\n"
+  },
+  {
+    "name": "cap",
+    "passed": true,
+    "output": "PASS: FAT32 count 32, 195 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:63: $finish called at 6031730000 (1ps)\n"
+  },
+  {
+    "name": "cluster64",
+    "passed": true,
+    "output": "PASS: FAT32 count 5, 33 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:63: $finish called at 374510000 (1ps)\n"
+  },
+  {
+    "name": "empty",
+    "passed": true,
+    "output": "PASS: FAT32 count 0, 0 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:63: $finish called at 20730000 (1ps)\n"
+  },
+  {
+    "name": "five",
+    "passed": true,
+    "output": "PASS: FAT32 count 5, 33 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:63: $finish called at 1288820000 (1ps)\n"
+  },
+  {
+    "name": "integration",
+    "passed": true,
+    "output": "PASS: FAT32 count 5, 33 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:63: $finish called at 943230000 (1ps)\n"
+  },
+  {
+    "name": "maxfile",
+    "passed": true,
+    "output": "PASS: FAT32 count 1, 6 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:63: $finish called at 4384650000 (1ps)\n"
+  },
+  {
+    "name": "one",
+    "passed": true,
+    "output": "PASS: FAT32 count 1, 9 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:63: $finish called at 282510000 (1ps)\n"
+  },
+  {
+    "name": "past_eof",
+    "passed": true,
+    "output": "PASS: bad file chain rejected, catalogue preserved, code 7\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:59: $finish called at 125580000 (1ps)\n"
+  },
+  {
+    "name": "selfchain",
+    "passed": true,
+    "output": "PASS: bad file chain rejected, catalogue preserved, code 6\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:59: $finish called at 41480000 (1ps)\n"
+  },
+  {
+    "name": "shortchain",
+    "passed": true,
+    "output": "PASS: bad file chain rejected, catalogue preserved, code 6\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:59: $finish called at 41480000 (1ps)\n"
+  },
+  {
+    "name": "thirtytwo",
+    "passed": true,
+    "output": "PASS: FAT32 count 32, 195 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat32.sv:63: $finish called at 6072790000 (1ps)\n"
+  },
+  {
+    "name": "osd_32",
+    "passed": true,
+    "output": "PASS: OSD 32/32 AUTO, 05/05 MANUAL and frame-latched update\nC:\\Users\\Lenovo\\Documents\\Codex\\2026-10-17\\d-baidunetdiskdownload-hx4s20-contest-202606-2\\outputs\\tf_bmp_fat32\\sim\\fat32\\tb_fat_osd.sv:13: $finish called at 220000 (1ps)\n"
+  }
+]

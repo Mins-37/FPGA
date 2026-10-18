@@ -2,7 +2,7 @@
 // 5x7 glyphs scaled 2x; translucent panels retain the underlying picture.
 module video_osd #(parameter CLK_HZ=25000000)(
  input wire clk,input wire rst,input wire in_vs,input wire in_de,
- input wire [23:0] in_rgb,input wire [7:0] status,input wire [3:0] controls,input wire [7:0] debug_status,
+ input wire [23:0] in_rgb,input wire [13:0] status,input wire [3:0] controls,input wire [7:0] debug_status,
  output reg out_vs,output reg out_de,output reg [23:0] out_rgb
 );
  reg vs_d,de_d;
@@ -10,8 +10,12 @@ module video_osd #(parameter CLK_HZ=25000000)(
  reg [24:0] second_count;
  reg [3:0] h10,h1,m10,m1,s10,s1;
  reg [3:0] h10f,h1f,m10f,m1f,s10f,s1f;
- reg [7:0] status_frame;
+ reg [13:0] status_frame;
  reg [3:0] controls_frame;
+ reg [3:0] idx_tens,idx_ones,count_tens,count_ones;
+ wire [5:0] shown_index={1'b0,status[4:0]}+1'b1;
+ function [3:0] tens(input [5:0] n); begin tens=n>=30 ? 3 : n>=20 ? 2 : n>=10 ? 1 : 0;end endfunction
+ function [3:0] ones(input [5:0] n); begin ones=n>=30 ? n-30 : n>=20 ? n-20 : n>=10 ? n-10 : n;end endfunction
  reg [7:0] debug_frame;
  reg [9:0] scroll;
  wire frame_edge=in_vs && !vs_d;
@@ -21,13 +25,14 @@ module video_osd #(parameter CLK_HZ=25000000)(
    vs_d<=0;de_d<=0;x<=0;y<=0;second_count<=0;
    h10<=0;h1<=0;m10<=0;m1<=0;s10<=0;s1<=0;
    h10f<=0;h1f<=0;m10f<=0;m1f<=0;s10f<=0;s1f<=0;
-   status_frame<=0;scroll<=0;controls_frame<=0;debug_frame<=0;
+   status_frame<=0;idx_tens<=0;idx_ones<=0;count_tens<=0;count_ones<=0;scroll<=0;controls_frame<=0;debug_frame<=0;
   end else begin
    vs_d<=in_vs;de_d<=in_de;
    if(in_vs!=vs_d) begin x<=0;y<=0;end
    else if(in_de) x<=x+1'b1;
    else begin x<=0;if(de_d) y<=y+1'b1;end
    if(frame_edge) begin
+    idx_tens<=tens(shown_index);idx_ones<=ones(shown_index);count_tens<=tens(status[10:5]);count_ones<=ones(status[10:5]);
     status_frame<=status;controls_frame<=controls;debug_frame<=debug_status;
     h10f<=h10;h1f<=h1;m10f<=m10;m1f<=m1;s10f<=s10;s1f<=s1;
     scroll <= scroll==MESSAGE_WIDTH-1 ? 0 : scroll+1'b1;
@@ -114,18 +119,18 @@ module video_osd #(parameter CLK_HZ=25000000)(
 6'd14: header_char=8'd77;
 6'd15: header_char=8'd71;
 6'd16: header_char=8'd32;
-6'd17: header_char=status_frame[7] ? (8'd49 + {6'd0,status_frame[1:0]}) : 8'd45;
-6'd18: header_char=8'd47;
-6'd19: header_char=8'd48 + {5'd0,status_frame[4:2]};
-6'd20: header_char=8'd32;
-6'd21: header_char=8'd32;
-6'd22: header_char=status_frame[5] ? 8'd65 : 8'd77;
-6'd23: header_char=status_frame[5] ? 8'd85 : 8'd65;
-6'd24: header_char=status_frame[5] ? 8'd84 : 8'd78;
-6'd25: header_char=status_frame[5] ? 8'd79 : 8'd85;
-6'd26: header_char=status_frame[5] ? 8'd32 : 8'd65;
-6'd27: header_char=status_frame[5] ? 8'd32 : 8'd76;
-6'd28: header_char=8'd32;
+6'd17: header_char=status_frame[13] ? 8'd48+idx_tens : 8'd45;
+6'd18: header_char=status_frame[13] ? 8'd48+idx_ones : 8'd45;
+6'd19: header_char=8'd47;
+6'd20: header_char=8'd48+count_tens;
+6'd21: header_char=8'd48+count_ones;
+6'd22: header_char=8'd32;
+6'd23: header_char=status_frame[11] ? 8'd65 : 8'd77;
+6'd24: header_char=status_frame[11] ? 8'd85 : 8'd65;
+6'd25: header_char=status_frame[11] ? 8'd84 : 8'd78;
+6'd26: header_char=status_frame[11] ? 8'd79 : 8'd85;
+6'd27: header_char=status_frame[11] ? 8'd32 : 8'd65;
+6'd28: header_char=status_frame[11] ? 8'd32 : 8'd76;
  default:header_char=8'd32;
  endcase end endfunction
  function [7:0] slogan_char(input [5:0] col);

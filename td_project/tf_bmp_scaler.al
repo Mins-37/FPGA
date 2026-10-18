@@ -2,7 +2,7 @@
 <Project Version="3" Minor="2" Path=".">
     <Project_Created_Time></Project_Created_Time>
     <TD_Version>6.2.168116</TD_Version>
-    <Name>tf_bmp_fade</Name>
+    <Name>tf_bmp_scaler</Name>
     <HardWare>
         <Family>EG4</Family>
         <Device>EG4S20BG256</Device>
@@ -270,6 +270,9 @@
 </FileInfo></File><File Path="../user_source/hdl_source/video_fade.v"><FileInfo>
 <Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&amp;R" Val="true"/>
 <Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="55"/>
+</FileInfo></File><File Path="../user_source/hdl_source/SD/fat32_store.v"><FileInfo>
+<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&amp;R" Val="true"/>
+<Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="56"/>
 </FileInfo></File></Verilog>
         <ADC_FILE>
             <File Path="../user_source/constraints_source/pin.adc">

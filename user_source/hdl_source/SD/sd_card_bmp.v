@@ -1,9 +1,6 @@
 
 module sd_card_bmp #(
-    parameter integer CLK_FREQ_HZ       = 100_000_000,
-    parameter [31:0]  SCAN_START_SECTOR = 32'd0,
-    parameter [31:0]  SCAN_MAX_SECTOR   = 32'd131071,
-    parameter [2:0]   SCAN_TARGET_COUNT = 3'd4
+    parameter integer CLK_FREQ_HZ = 100_000_000
 )(
     input                       clk,
     input                       rst,
@@ -12,7 +9,7 @@ module sd_card_bmp #(
     input  [15:0]               bmp_width,
     input  [15:0]               bmp_height,
     output reg                  display_valid,
-    output wire [7:0]           osd_status,
+    output wire [13:0]          osd_status,
     output wire [7:0]           osd_debug,
     output      [3:0]           state_code,
 
@@ -31,6 +28,12 @@ module sd_card_bmp #(
     input                       SD_MISO
 );
 
+wire card_req,card_valid,card_end;
+wire [31:0] card_addr;
+wire [7:0] card_data;
+wire fat_mount_error,fat_read_error;
+wire [3:0] fat_error_code;
+
 wire key_next_press;
 wire key_auto_press;
 
@@ -43,7 +46,13 @@ wire [3:0]       state_code_i;
 wire             bmp_data_wr_en;
 wire [23:0]      bmp_data;
 wire             sd_init_done;
-wire             bmp_ready;
+wire             bmp_ready_raw;
+reg              bmp_ready;
+// Register the decoder-idle indication to keep its state decode off scheduler paths.
+always @(posedge clk or posedge rst) begin
+    if(rst) bmp_ready<=0;
+    else bmp_ready<=bmp_ready_raw;
+end
 wire             scan_done;
 wire             scan_found_valid;
 wire [31:0]      scan_found_sector;
@@ -56,14 +65,14 @@ reg              scan_kicked;
 reg              first_image_committed;
 reg              auto_play_en;
 reg [31:0]       auto_cnt;
-reg [2:0]        img_found_count;
-reg [1:0]        img_idx;              // 当前真正显示中的图片编号
-reg [1:0]        load_idx;             // 当前正在写入的图片编号
+reg [5:0]        img_found_count;
+reg [4:0]        img_idx;              // 当前真正显示中的图片编号
+reg [4:0]        load_idx;             // 当前正在写入的图片编号
 reg [1:0]        pending_buf_idx;      // 当前正在写入的目标缓冲区
-reg [31:0]       img_sector0;
-reg [31:0]       img_sector1;
-reg [31:0]       img_sector2;
-reg [31:0]       img_sector3;
+
+
+
+
 reg              next_req_pending;
 reg              load_busy;
 reg [31:0]       load_timeout_cnt;
@@ -80,7 +89,7 @@ reg [2:0]        wrfin_tgl_sync;
 wire             write_finish_pulse;
 
 wire auto_tick;
-wire [1:0] next_from_current;
+wire [4:0] next_from_current;
 
 assign write_en   = bmp_data_wr_en;
 assign write_data = {bmp_data[23:16], bmp_data[15:8], bmp_data[7:0], 8'b0};
@@ -110,31 +119,13 @@ key_press_debounce #(
     .press_pulse(key_auto_press)
 );
 
-function [1:0] next_index_limited;
-    input [1:0] cur;
-    input [2:0] count;
-    begin
-        case (count)
-            3'd0: next_index_limited = 2'd0;
-            3'd1: next_index_limited = 2'd0;
-            3'd2: next_index_limited = (cur == 2'd1) ? 2'd0 : (cur + 2'd1);
-            3'd3: next_index_limited = (cur == 2'd2) ? 2'd0 : (cur + 2'd1);
-            default: next_index_limited = (cur == 2'd3) ? 2'd0 : (cur + 2'd1);
-        endcase
-    end
+function [4:0] next_index_limited;
+ input [4:0] cur; input [5:0] count;
+ begin next_index_limited=({1'b0,cur}+6'd1>=count) ? 5'd0 : cur+5'd1;end
 endfunction
-
 function [31:0] sector_lut;
-    input [1:0] idx;
-    begin
-        case (idx)
-            2'd0: sector_lut = img_sector0;
-            2'd1: sector_lut = img_sector1;
-            2'd2: sector_lut = img_sector2;
-            2'd3: sector_lut = img_sector3;
-            default: sector_lut = img_sector0;
-        endcase
-    end
+ input [4:0] idx;
+ begin sector_lut={12'd0,idx,15'd0};end
 endfunction
 
 function [1:0] next_buf_lut;
@@ -166,10 +157,6 @@ always @(posedge clk or posedge rst) begin
         pending_buf_idx       <= 2'd0;
         write_buf_idx         <= 2'd0;
         disp_buf_idx          <= 2'd0;
-        img_sector0           <= 32'd0;
-        img_sector1           <= 32'd0;
-        img_sector2           <= 32'd0;
-        img_sector3           <= 32'd0;
         next_req_pending      <= 1'b0;
         load_busy             <= 1'b0;
         load_timeout_cnt      <= 32'd0;
@@ -194,10 +181,6 @@ always @(posedge clk or posedge rst) begin
             pending_buf_idx       <= 2'd0;
             write_buf_idx         <= 2'd0;
             disp_buf_idx          <= 2'd0;
-            img_sector0           <= 32'd0;
-            img_sector1           <= 32'd0;
-            img_sector2           <= 32'd0;
-            img_sector3           <= 32'd0;
             next_req_pending      <= 1'b0;
             load_busy             <= 1'b0;
             load_timeout_cnt      <= 32'd0;
@@ -208,16 +191,7 @@ always @(posedge clk or posedge rst) begin
         end else begin
             // 扫描阶段缓存前 4 张图的起始 sector
             if (scan_found_valid) begin
-                case (img_found_count)
-                    3'd0: img_sector0 <= scan_found_sector;
-                    3'd1: img_sector1 <= scan_found_sector;
-                    3'd2: img_sector2 <= scan_found_sector;
-                    3'd3: img_sector3 <= scan_found_sector;
-                    default: ;
-                endcase
-
-                if (img_found_count < 3'd4)
-                    img_found_count <= img_found_count + 3'd1;
+                if(img_found_count<32) img_found_count<=img_found_count+1'b1;
             end
 
             // 记住 bmp_read 已经把源图送完 FIFO，但还不能切显示，得等整帧写完
@@ -241,7 +215,7 @@ always @(posedge clk or posedge rst) begin
                 display_valid         <= 1'b1;
                 first_image_committed <= 1'b1;
             end else if (load_busy) begin
-                if (load_timeout_cnt >= CLK_FREQ_HZ * 5 - 1) begin
+                if (fat_read_error || load_timeout_cnt >= CLK_FREQ_HZ * 5 - 1) begin
                     // 超时（例如读到坏图或截断的文件导致死锁），强制释放 busy 以恢复按键响应
                     load_busy             <= 1'b0;
                     load_timeout_cnt      <= 32'd0;
@@ -249,7 +223,8 @@ always @(posedge clk or posedge rst) begin
                     write_done_seen       <= 1'b0;
                     load_abort            <= 1'b1;
                 end else begin
-                    load_timeout_cnt <= load_timeout_cnt + 32'd1;
+                    if(card_valid || bmp_data_wr_en || write_finish_pulse) load_timeout_cnt<=0;
+                    else load_timeout_cnt <= load_timeout_cnt + 32'd1;
                 end
             end else begin
                 load_timeout_cnt <= 32'd0;
@@ -297,7 +272,7 @@ always @(posedge clk or posedge rst) begin
                 // 首图自动加载到 buffer0
                 if (scan_done && !first_image_committed && bmp_ready && !load_busy && !load_abort && recovery_count==0 && (img_found_count != 3'd0)) begin
                     load_idx         <= 2'd0;
-                    load_sector      <= img_sector0;
+                    load_sector      <= 32'd0;
                     pending_buf_idx  <= 2'd0;
                     write_buf_idx    <= 2'd0;
                     load_start_pulse <= 1'b1;
@@ -342,7 +317,7 @@ reg [1:0] write_ack_sync;
 reg [1:0] fade_black_sync;
 reg [31:0] recovery_count;
 reg key_next_seen, key_auto_seen, load_error_seen;
-assign osd_debug = {4'd0,load_error_seen,load_busy,key_auto_seen,key_next_seen};
+assign osd_debug = {fat_error_code,(load_error_seen | fat_mount_error),load_busy,key_auto_seen,key_next_seen};
 always @(posedge clk or posedge rst) begin
     if(rst) begin
         write_ack_sync<=0;fade_black_sync<=0;recovery_count<=0;
@@ -357,18 +332,27 @@ always @(posedge clk or posedge rst) begin
     end
 end
 
+fat32_store u_fat32(
+ .clk(clk),.rst(rst),.sd_init_done(sd_init_done),.scan_start(scan_start_pulse),.load_abort(load_abort),
+ .scan_done(scan_done),.scan_found_valid(scan_found_valid),.scan_found_sector(scan_found_sector),
+ .mount_error(fat_mount_error),.read_error(fat_read_error),.error_code(fat_error_code),
+ .file_req(sd_sec_read),.file_addr(sd_sec_read_addr),.file_data(sd_sec_read_data),
+ .file_valid(sd_sec_read_data_valid),.file_end(sd_sec_read_end),
+ .card_req(card_req),.card_addr(card_addr),.card_data(card_data),.card_valid(card_valid),.card_end(card_end)
+);
+
 bmp_read bmp_read_m0(
     .clk                    (clk),
     .rst                    (rst),
-    .ready                  (bmp_ready),
+    .ready                  (bmp_ready_raw),
 
-    .scan_start             (scan_start_pulse),
-    .scan_start_sector      (SCAN_START_SECTOR),
-    .scan_max_sector        (SCAN_MAX_SECTOR),
-    .scan_target_count      (SCAN_TARGET_COUNT),
-    .scan_done              (scan_done),
-    .scan_found_valid       (scan_found_valid),
-    .scan_found_sector      (scan_found_sector),
+    .scan_start             (1'b0),
+    .scan_start_sector      (32'd0),
+    .scan_max_sector        (32'd0),
+    .scan_target_count      (3'd0),
+    .scan_done              (),
+    .scan_found_valid       (),
+    .scan_found_sector      (),
     .scan_found_total       (scan_found_total),
 
     .load_start             (load_start_pulse),
@@ -398,11 +382,11 @@ sd_card_top sd_card_top_m0(
     .SD_MOSI                (SD_MOSI),
     .SD_MISO                (SD_MISO),
     .sd_init_done           (sd_init_done),
-    .sd_sec_read            (sd_sec_read),
-    .sd_sec_read_addr       (sd_sec_read_addr),
-    .sd_sec_read_data       (sd_sec_read_data),
-    .sd_sec_read_data_valid (sd_sec_read_data_valid),
-    .sd_sec_read_end        (sd_sec_read_end),
+    .sd_sec_read            (card_req),
+    .sd_sec_read_addr       (card_addr),
+    .sd_sec_read_data       (card_data),
+    .sd_sec_read_data_valid (card_valid),
+    .sd_sec_read_end        (card_end),
     .sd_sec_write           (1'b0),
     .sd_sec_write_addr      (32'd0),
     .sd_sec_write_data      (),

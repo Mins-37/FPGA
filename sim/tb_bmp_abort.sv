@@ -34,10 +34,10 @@ module tb_bmp_abort;
   wait(read_req);@(negedge clk);
   for(i=0;i<512;i=i+1) begin valid=1;data=header(i);@(negedge clk);end
   valid=0;ending=1;@(negedge clk);ending=0;
-  repeat(3) @(negedge clk);
+  wait(done && ready);@(negedge clk);
   if(!done || total!=1 || !ready) $fatal(1,"Catalogue setup failed");
   abort_load=1;@(negedge clk);abort_load=0;
-  repeat(3) @(negedge clk);
+  wait(done && ready);@(negedge clk);
   if(!done || total!=1 || !ready) $fatal(1,"Load abort erased catalogue");
   rst=1;@(negedge clk);
   if(done || total!=0) $fatal(1,"Reset must clear catalogue");

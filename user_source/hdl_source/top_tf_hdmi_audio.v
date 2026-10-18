@@ -50,7 +50,7 @@ wire de;
 wire [23:0] vout_data_raw;
 wire [23:0] vout_data;
 wire        display_valid;
-wire [7:0] osd_status_sd, osd_status_video;
+wire [13:0] osd_status_sd, osd_status_video;
 wire [7:0] osd_debug_sd,osd_debug_video;
 wire [23:0] osd_rgb;
 wire osd_de, osd_vs;
@@ -168,10 +168,7 @@ end
 
 // ===================== TF 多图扫描与缓存（双缓冲） =====================
 sd_card_bmp #(
-    .CLK_FREQ_HZ       (100_000_000),
-    .SCAN_START_SECTOR (32'd0),
-    .SCAN_MAX_SECTOR   (32'd131071),
-    .SCAN_TARGET_COUNT (3'd3)
+    .CLK_FREQ_HZ (100_000_000)
 ) sd_card_bmp_m0(
     .clk               (sd_card_clk),
     .rst               (rst_all),
@@ -243,10 +240,10 @@ video_delay video_delay_m0(
 );
 
 // 首图提交前黑屏；提交后一直显示当前显示缓冲区内容
-assign vout_data = osd_status_video[7] ? vout_data_raw : 24'd0;
+assign vout_data = osd_status_video[13] ? vout_data_raw : 24'd0;
 
 frame_read_write #(
-    .WRITE_V_FLIP     (1),
+    .WRITE_V_FLIP     (0),
     .FRAME_WIDTH      (640),
     .FRAME_HEIGHT     (480)
 ) frame_read_write_m0(
@@ -328,7 +325,7 @@ audio_test_pcm u_audio_test_pcm(
 );
 
 // Stable bundled-data status transfer; no independent synchronization of image bits.
-cdc_status_bus u_osd_status(
+cdc_status_bus #(.WIDTH(14)) u_osd_status(
  .src_clk(sd_card_clk), .src_rst(rst_all), .src_data(osd_status_sd),
  .dst_clk(video_clk), .dst_rst(rst_all), .dst_data(osd_status_video)
 );
@@ -344,7 +341,7 @@ image_adjust u_image_adjust(
 );
 video_fade u_video_fade(
  .clk(video_clk),.rst(rst_all),
- .image_valid(osd_status_video[7]),.load_busy(osd_debug_video[2]),
+ .image_valid(osd_status_video[13]),.load_busy(osd_debug_video[2]),
  .in_vs(adjusted_vs),.in_de(adjusted_de),.in_rgb(adjusted_rgb),
  .out_vs(faded_vs),.out_de(faded_de),.out_rgb(faded_rgb),.black(fade_black)
 );

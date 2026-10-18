@@ -1,0 +1,12 @@
+# TD generated implementation intermediates
+*.db
+*.bid
+*.qor
+*.log
+*.logw
+*.rpt
+*_gate.area
+__pycache__/
+*.pyc
+*.vvp
+/work/
