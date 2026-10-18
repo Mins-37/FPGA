@@ -1,0 +1,27 @@
+[
+  {
+    "name": "tb_menu_control",
+    "passed": true,
+    "output": "PASS physical key gestures, no pre-release skip, one toggle per hold, six-row paging, 0/1/13/32 entries, current vs selection, volume/mute, acknowledged exact jump and no close/confirm leakage\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_control.sv:43: $finish called at 15300000 (1ps)\n"
+  },
+  {
+    "name": "tb_menu_osd",
+    "passed": true,
+    "output": "PASS real dual-clock names RAM, SFN compact names and tilde, 6-row metadata fetch, 13/32-file pages, types/play marker/highlight, empty/scanning/closed and RGB/DE/VS 3-stage alignment\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_osd.sv:44: $finish called at 10916000 (1ps)\n"
+  },
+  {
+    "name": "tb_audio_controls",
+    "passed": true,
+    "output": "PASS key bounce, next/previous, short pause, long mute, volume chords/repeat/clamp, release order, no navigation leakage, clean-event CDC\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_audio_controls.sv:36: $finish called at 7930000 (1ps)\n"
+  },
+  {
+    "name": "tb_clean_controls",
+    "passed": true,
+    "output": "PASS clean long/release/one-shot, short next, menu priority/late chord/release order, menu navigation, volume/mute priority, previous, bounce\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_clean_controls.sv:34: $finish called at 13620000 (1ps)\n"
+  },
+  {
+    "name": "tb_clean_video",
+    "passed": true,
+    "output": "PASS full 640x480 clean exact RGB, mid-frame deferred toggle, normal overlays restored, unchanged RGB/DE/VS latency (307200 pixels)\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_clean_video.sv:33: $finish called at 9332530000 (1ps)\n"
+  }
+]

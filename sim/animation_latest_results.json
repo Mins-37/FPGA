@@ -1,0 +1,137 @@
+[
+  {
+    "name": "frame2",
+    "passed": true,
+    "output": "PASS: ANM frame 2/3 fps=10, 307200 RGB565-expanded pixels, 76 sector reads, stalls=1, byte_gap=1, cycles=1799337\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:75: $finish called at 17993370000 (1ps)\n"
+  },
+  {
+    "name": "first",
+    "passed": true,
+    "output": "PASS: ANM frame 0/3 fps=10, 307200 RGB565-expanded pixels, 76 sector reads, stalls=0, byte_gap=1, cycles=1652635\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:75: $finish called at 16526350000 (1ps)\n"
+  },
+  {
+    "name": "last",
+    "passed": true,
+    "output": "PASS: ANM frame 399/400 fps=5, 307200 RGB565-expanded pixels, 76 sector reads, stalls=1, byte_gap=1, cycles=1799337\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:75: $finish called at 17993370000 (1ps)\n"
+  },
+  {
+    "name": "magic",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:70: $finish called at 10420000 (1ps)\n"
+  },
+  {
+    "name": "format",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:70: $finish called at 10420000 (1ps)\n"
+  },
+  {
+    "name": "length",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:70: $finish called at 10420000 (1ps)\n"
+  },
+  {
+    "name": "rate",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:70: $finish called at 10420000 (1ps)\n"
+  },
+  {
+    "name": "range",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:70: $finish called at 10420000 (1ps)\n"
+  },
+  {
+    "name": "abort",
+    "passed": true,
+    "output": "PASS: animation abort releases source and writer\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:66: $finish called at 78480000 (1ps)\n"
+  },
+  {
+    "name": "spi_25mhz",
+    "passed": true,
+    "output": "PASS: ANM frame 2/3 fps=10, 307200 RGB565-expanded pixels, 76 sector reads, stalls=1, byte_gap=31, cycles=2964780\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_anm_read.sv:75: $finish called at 29647800000 (1ps)\n"
+  },
+  {
+    "name": "overlay",
+    "passed": true,
+    "output": "PASS: ANM PLAY/PAUSE OSD, no per-frame fade, picture fade restored\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_animation_overlay.sv:16: $finish called at 390000 (1ps)\n"
+  },
+  {
+    "name": "handoff",
+    "passed": true,
+    "output": "PASS: reader buffer acknowledgement changes only with frame request and stays fixed during active read\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_reader_handoff.sv:13: $finish called at 660000 (1ps)\n"
+  },
+  {
+    "name": "activefat",
+    "passed": true,
+    "output": "PASS: FAT32 count 5, 33 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:63: $finish called at 585320000 (1ps)\n"
+  },
+  {
+    "name": "bad_index",
+    "passed": true,
+    "output": "PASS: bad file chain rejected, catalogue preserved, code 5\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:59: $finish called at 20850000 (1ps)\n"
+  },
+  {
+    "name": "badboot",
+    "passed": true,
+    "output": "PASS: invalid FAT32 volume rejected, code 2\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:53: $finish called at 20630000 (1ps)\n"
+  },
+  {
+    "name": "cap",
+    "passed": true,
+    "output": "PASS: FAT32 count 32, 195 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:63: $finish called at 6056430000 (1ps)\n"
+  },
+  {
+    "name": "cluster64",
+    "passed": true,
+    "output": "PASS: FAT32 count 5, 33 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:63: $finish called at 375010000 (1ps)\n"
+  },
+  {
+    "name": "empty",
+    "passed": true,
+    "output": "PASS: FAT32 count 0, 0 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:63: $finish called at 20730000 (1ps)\n"
+  },
+  {
+    "name": "five",
+    "passed": true,
+    "output": "PASS: FAT32 count 5, 33 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:63: $finish called at 1293520000 (1ps)\n"
+  },
+  {
+    "name": "integration",
+    "passed": true,
+    "output": "PASS: FAT32 count 5, 33 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:63: $finish called at 882580000 (1ps)\n"
+  },
+  {
+    "name": "maxfile",
+    "passed": true,
+    "output": "PASS: FAT32 count 1, 6 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:63: $finish called at 4712620000 (1ps)\n"
+  },
+  {
+    "name": "one",
+    "passed": true,
+    "output": "PASS: FAT32 count 1, 9 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:63: $finish called at 282750000 (1ps)\n"
+  },
+  {
+    "name": "past_eof",
+    "passed": true,
+    "output": "PASS: bad file chain rejected, catalogue preserved, code 7\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:59: $finish called at 125980000 (1ps)\n"
+  },
+  {
+    "name": "selfchain",
+    "passed": true,
+    "output": "PASS: bad file chain rejected, catalogue preserved, code 6\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:59: $finish called at 41510000 (1ps)\n"
+  },
+  {
+    "name": "shortchain",
+    "passed": true,
+    "output": "PASS: bad file chain rejected, catalogue preserved, code 6\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:59: $finish called at 41510000 (1ps)\n"
+  },
+  {
+    "name": "thirtytwo",
+    "passed": true,
+    "output": "PASS: FAT32 count 32, 195 fragmented/random/backward sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat32.sv:63: $finish called at 6097490000 (1ps)\n"
+  },
+  {
+    "name": "osd_32",
+    "passed": true,
+    "output": "PASS: OSD 32/32 AUTO, 05/05 MANUAL and frame-latched update\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\fat32\\tb_fat_osd.sv:13: $finish called at 220000 (1ps)\n"
+  }
+]

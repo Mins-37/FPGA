@@ -74,3 +74,18 @@ set_clock_groups -exclusive \
 # 7. 其余 Input/Output delay 先保持空白
 #    你当前两个原始 sdc 也都没有写这部分。
 # ------------------------------------------------------------
+
+# Audited asynchronous crossings between the independent video and system PLLs.
+# Preserve setup/max-delay checks; remove only edge-based hold/removal checks.
+# These are FIFOs, multi-flop controls and request/ack bundled-data transfers.
+# Fail closed: an unmatched clock must never create an unscoped exception.
+set cdc_video [get_clocks {video_clk}]
+set cdc_sd [get_clocks {sd_card_clk}]
+set cdc_mem [get_clocks {ext_mem_clk}]
+if {[llength $cdc_video]==0 || [llength $cdc_sd]==0 || [llength $cdc_mem]==0} {
+ error "CDC hold constraints require video_clk, sd_card_clk and ext_mem_clk"
+}
+set_false_path -hold -from $cdc_video -to $cdc_sd
+set_false_path -hold -from $cdc_video -to $cdc_mem
+set_false_path -hold -from $cdc_sd -to $cdc_video
+set_false_path -hold -from $cdc_mem -to $cdc_video

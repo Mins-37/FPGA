@@ -1,0 +1,57 @@
+[
+  {
+    "name": "tb_audio_controls",
+    "passed": true,
+    "output": "PASS key bounce, next/previous, short pause, long mute, volume chords/repeat/clamp, release order, no navigation leakage, clean-event CDC\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_audio_controls.sv:36: $finish called at 7930000 (1ps)\n"
+  },
+  {
+    "name": "tb_audio_gain",
+    "passed": true,
+    "output": "PASS signed stereo gain: 3084 exact samples, all nine levels, smooth mute/unmute, idle, extrema, valid alignment\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_audio_gain.sv:31: $finish called at 154680000 (1ps)\n"
+  },
+  {
+    "name": "tb_audio_spectrum",
+    "passed": true,
+    "output": "PASS 21 Goertzel blocks: all 8 centers, off-bin, multitone, noise, silence, gain scaling, exact independent integer model, pause/reset\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_audio_spectrum.sv:22: $finish called at 28030250000 (1ps)\n"
+  },
+  {
+    "name": "tb_audiofx_overlay",
+    "passed": true,
+    "output": "PASS spectrum panel colors, gaps, grid, frame snapshot/decay, passthrough, volume percent/mute text\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_audiofx_overlay.sv:23: $finish called at 840000 (1ps)\n"
+  },
+  {
+    "name": "tb_audiofx_chain",
+    "passed": true,
+    "output": "PASS actual 25MHz->48kHz tone/gain/spectrum chain, 3100 output samples, mute/unmute and unchanged ACR/cadence\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_audiofx_chain.sv:27: $finish called at 64583680000 (1ps)\n"
+  },
+  {
+    "name": "tb_audio_waveform",
+    "passed": true,
+    "output": "PASS: full captures, mirrored BRAMs, exact trace pixels/read latency, frame-only commit, write/display bank separation, muted/silent waveform clears\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_audio_waveform.sv:41: $finish called at 12083480000 (1ps)\n"
+  },
+  {
+    "name": "tb_waveform_pipeline",
+    "passed": true,
+    "output": "PASS synchronous waveform RAM compositor: 128 random RGB/DE/VS inputs share exact two-stage latency\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_waveform_pipeline.sv:16: $finish called at 1326000 (1ps)\n"
+  },
+  {
+    "name": "tb_progress_osd",
+    "passed": true,
+    "output": "PASS time label tenths/minutes, frame latch, progress fill/track/border, pause color, inactive hide\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_progress_osd.sv:18: $finish called at 2240000 (1ps)\n"
+  },
+  {
+    "name": "tb_av_osd",
+    "passed": true,
+    "output": "PASS VID 08/08 PLAY/PAUSE OSD with black audio-only background\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_av_osd.sv:11: $finish called at 170000 (1ps)\n"
+  },
+  {
+    "name": "tb_wav_osd",
+    "passed": true,
+    "output": "PASS WAV 07/07 PLAY/PAUSE OSD with black audio-only background\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_wav_osd.sv:11: $finish called at 170000 (1ps)\n"
+  },
+  {
+    "name": "tb_animation_overlay",
+    "passed": true,
+    "output": "PASS: ANM PLAY/PAUSE OSD, no per-frame fade, picture fade restored\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audiofx\\sim\\tb_animation_overlay.sv:16: $finish called at 390000 (1ps)\n"
+  }
+]

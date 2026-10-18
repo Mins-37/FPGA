@@ -1,0 +1,5 @@
+{
+  "name": "progress_math",
+  "passed": true,
+  "output": "PASS 69 progress arithmetic cases, pause, loop reset, inactive/zero duration\nwork\\player-plus\\sim\\tb_media_progress.sv:21: $finish called at 654680000 (1ps)\n"
+}

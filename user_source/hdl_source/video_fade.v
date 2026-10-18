@@ -2,7 +2,7 @@
 // SD controller holds a completed background image until black has been synchronized.
 // Then three black frames allow the frame reader to select/refill the new buffer.
 module video_fade #(parameter SETTLE_FRAMES=3)(
- input wire clk,input wire rst,input wire image_valid,input wire load_busy,
+ input wire clk,input wire rst,input wire image_valid,input wire load_busy,input wire bypass,
  input wire in_vs,input wire in_de,input wire [23:0] in_rgb,
  output reg out_vs,output reg out_de,output reg [23:0] out_rgb,output wire black
 );
@@ -19,6 +19,7 @@ module video_fade #(parameter SETTLE_FRAMES=3)(
    vs_d<=in_vs;
    if(frame_edge) begin
     if(!image_valid) begin state<=WAIT_BLACK;gain<=0;settling<=0;end
+    else if(bypass) begin state<=IDLE;gain<=32;settling<=0;end
     else case(state)
      IDLE: begin
       gain<=32;

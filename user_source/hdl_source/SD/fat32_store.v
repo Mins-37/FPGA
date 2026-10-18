@@ -1,9 +1,10 @@
 // Read-only FAT32 root-directory catalogue and fragmented-file sector mapper.
 // Virtual sector = {file_index[4:0], sector_in_file[14:0]}.
 // SFN sorting; first 32 BMP entries. One FAT-sector cache and sparse chain index.
-module fat32_store(
+module fat32_store #(parameter ENABLE_MENU=0)(
  input wire clk,rst,sd_init_done,scan_start,load_abort,
- output reg scan_done,scan_found_valid,output reg [31:0] scan_found_sector,
+ output reg scan_done,scan_found_valid,output reg [31:0] scan_found_sector,output reg scan_found_animation,output reg scan_found_audio,
+ output reg scan_name_valid,output reg [8:0] scan_name_addr,output reg [7:0] scan_name_data,
  output reg mount_error,read_error,output reg [3:0] error_code,
  input wire file_req,input wire [31:0] file_addr,
  output wire [7:0] file_data,output wire file_valid,file_end,
@@ -15,8 +16,12 @@ module fat32_store(
  DIR_ISSUE=6,DIR_WAIT=7,DIR_NEXT=8,FAT_GET=9,FAT_WAIT=10,FAT_LOOK=11,FAT_TAKE=12,
  ROOT_NEXT=13,SORT_READ=14,SORT_CMP=15,SORT_SWAP=16,SORT_ADV=17,EMIT=18,
  READY=19,FILE_SETUP=20,BUILD=21,BUILD_NEXT=22,SEEK=23,SEEK_LOOK=24,
- SEEK_STEP=25,SEEK_NEXT=26,DATA_ISSUE=27,DATA_WAIT=28,RELEASE=29,DRAIN=30,FAILED=31,SORT_SWAP2=32,SORT_A_WAIT=33,SORT_A_TAKE=34,SORT_B_WAIT=35,SORT_B_TAKE=36,FILE_LOOK=37,GEO_CHECK=38,GEO_APPLY=39,DIR_ADDR=40,DIR_GO=41,DATA_GO=42,FILE_SIZE=43;
+ SEEK_STEP=25,SEEK_NEXT=26,DATA_ISSUE=27,DATA_WAIT=28,RELEASE=29,DRAIN=30,FAILED=31,SORT_SWAP2=32,SORT_A_WAIT=33,SORT_A_TAKE=34,SORT_B_WAIT=35,SORT_B_TAKE=36,FILE_LOOK=37,GEO_CHECK=38,GEO_APPLY=39,DIR_ADDR=40,DIR_GO=41,DATA_GO=42,FILE_SIZE=43,EMIT_WAIT=44,EMIT_SEND=45,SEEK_CACHE=46,HOT_LOOKUP=47,FAT_VALIDATE=48;
  reg [5:0] state,after_fat;
+ localparam EMIT_NAME=49;reg [87:0] emit_name;reg [3:0] emit_name_pos,emit_name_length;
+ function [3:0] basename_length(input [87:0] name);
+ integer n;begin basename_length=0;for(n=0;n<8;n=n+1)if(name[87-n*8-:8]!=8'h20)basename_length=n+1;end
+ endfunction
  reg issue,io_done;reg [1:0] kind,io_kind,io_state;reg [31:0] request_sector;
  reg [8:0] byte_no;reg [23:0] word_low;
  reg [15:0] bps,reserved,root_entries,fat16,flags,version;
@@ -36,12 +41,13 @@ module fat32_store(
  reg [31:0] fat_cluster,fat_value;reg [27:0] fat_words[0:127];
  reg fat_cache_valid;reg [31:0] fat_tag;reg [27:0] fat_q;
  reg [27:0] checkpoints[0:2047];reg [27:0] checkpoint_q;
+ reg [31:0] hot_cluster0,hot_cluster1;reg [15:0] hot_index0,hot_index1;reg hot_valid0,hot_valid1,hot_victim,hot_slot,hot_hit0,hot_hit1;reg legal_cluster,fat_eoc,fat_self_dir,fat_self_walk;
  reg chain_valid;reg [4:0] chain_file,requested_file;
  reg [15:0] chain_index,chain_length,target_index,walk_index;
  reg [31:0] walk_cluster,file_sector,cluster_delta;reg [15:0] sector_count;
  wire [31:0] complete_size={card_data,entry_size[23:0]};
  wire [31:0] incoming_word={card_data,word_low};
- wire legal_cluster=(fat_value>=2 && fat_value<cluster_limit);
+ 
  wire boot_shape=(bps==512 && root_entries==0 && fat16==0 && reserved!=0 &&
   (nfats==1 || nfats==2) && fatsz!=0 && version==0 &&
   (spc==1 || spc==2 || spc==4 || spc==8 || spc==16 || spc==32 || spc==64 || spc==128));
@@ -53,7 +59,7 @@ module fat32_store(
   checkpoint_q<=checkpoints[target_index[14:4]];
  end
  wire cat_dir_write=io_state==1 && card_valid && io_kind==K_DIR && byte_no[4:0]==31 &&
-  !directory_end && entry_first!=8'he5 && (entry_attr&8'h18)==0 && entry_name[23:0]==24'h424d50 &&
+  !directory_end && entry_first!=8'he5 && (entry_attr&8'h18)==0 && (entry_name[23:0]==24'h424d50 || entry_name[23:0]==24'h414e4d || entry_name[23:0]==24'h574156 || entry_name[23:0]==24'h41564d) &&
   entry_cluster>=2 && complete_size>=54 && complete_size<=32'd16777216 && count<32;
  wire cat_sort_write=state==SORT_SWAP || state==SORT_SWAP2;
  wire [4:0] cat_write_addr=cat_sort_write ? (state==SORT_SWAP ? sort_index : sort_index+5'd1) : count[4:0];
@@ -128,7 +134,7 @@ module fat32_store(
       31:begin
        entry_size[31:24]<=card_data;
        if(!directory_end && entry_first!=8'he5 && (entry_attr&8'h18)==0 &&
-        entry_name[23:0]==24'h424d50 && entry_cluster>=2 && complete_size>=54 &&
+        (entry_name[23:0]==24'h424d50 || entry_name[23:0]==24'h414e4d || entry_name[23:0]==24'h574156 || entry_name[23:0]==24'h41564d) && entry_cluster>=2 && complete_size>=54 &&
         complete_size<=32'd16777216 && count<32) begin
         count<=count+1'b1;
        end
@@ -143,8 +149,9 @@ module fat32_store(
  end
  always @(posedge clk or posedge rst) begin
   if(rst) begin
-   state<=IDLE;after_fat<=0;issue<=0;kind<=0;request_sector<=0;
-   scan_done<=0;scan_found_valid<=0;scan_found_sector<=0;mount_error<=0;read_error<=0;error_code<=0;
+   hot_hit0<=0;hot_hit1<=0;legal_cluster<=0;fat_eoc<=0;fat_self_dir<=0;fat_self_walk<=0;hot_cluster0<=0;hot_cluster1<=0;hot_index0<=0;hot_index1<=0;hot_valid0<=0;hot_valid1<=0;hot_victim<=0;hot_slot<=0;state<=IDLE;after_fat<=0;issue<=0;kind<=0;request_sector<=0;
+   scan_name_valid<=0;scan_name_addr<=0;scan_name_data<=0;emit_name<=0;emit_name_pos<=0;emit_name_length<=0;
+   scan_done<=0;scan_found_valid<=0;scan_found_sector<=0;scan_found_animation<=0;scan_found_audio<=0;mount_error<=0;read_error<=0;error_code<=0;
    part_base<=0;boot_partition<=0;overhead<=0;data_base<=0;fat_base<=0;cluster_count<=0;cluster_limit<=0;fat_required<=0;volume_end<=0;geometry_valid<=0;dir_lba<=0;data_lba<=0;file_offset<=0;cluster_mask<=0;spc_shift<=0;
    dir_cluster<=0;dir_sector_offset<=0;dir_hops<=0;emit_index<=0;sort_pass<=0;sort_index<=0;
    catalogue_addr<=0;name_a<=0;name_b<=0;compare_a<=0;compare_b<=0;compare_byte<=0;start_a<=0;start_b<=0;size_a<=0;size_b<=0;
@@ -152,11 +159,12 @@ module fat32_store(
    chain_valid<=0;chain_file<=0;requested_file<=0;chain_index<=0;chain_length<=0;
    target_index<=0;walk_index<=0;walk_cluster<=0;file_sector<=0;sector_count<=0;cluster_delta<=0;
   end else begin
-   issue<=0;scan_found_valid<=0;read_error<=0;
-   if(!sd_init_done) begin state<=IDLE;scan_done<=0;fat_cache_valid<=0;chain_valid<=0;end
-   else if(load_abort) begin state<=DRAIN;chain_valid<=0;end
+   issue<=0;scan_found_valid<=0;scan_name_valid<=0;read_error<=0;
+   if(!sd_init_done) begin hot_valid0<=0;hot_valid1<=0;state<=IDLE;scan_done<=0;fat_cache_valid<=0;chain_valid<=0;end
+   else if(load_abort) begin hot_valid0<=0;hot_valid1<=0;state<=DRAIN;chain_valid<=0;end
    else case(state)
     IDLE:if(scan_start) begin
+     hot_valid0<=0;hot_valid1<=0;
      part_base<=0;boot_partition<=0;mount_error<=0;error_code<=0;scan_done<=0;chain_valid<=0;fat_cache_valid<=0;
      request_sector<=0;kind<=K_BOOT;issue<=1;state<=BOOT_WAIT;
     end
@@ -206,10 +214,11 @@ module fat32_store(
     end
     FAT_WAIT:if(io_done) begin fat_cache_valid<=1;state<=FAT_LOOK;end
     FAT_LOOK:state<=FAT_TAKE;
-    FAT_TAKE:begin fat_value<={4'd0,fat_q};state<=after_fat;end
+    FAT_TAKE:begin fat_value<={4'd0,fat_q};state<=FAT_VALIDATE;end
+    FAT_VALIDATE:begin legal_cluster<=(fat_value>=2 && fat_value<cluster_limit);fat_eoc<=fat_value>=32'h0ffffff8;fat_self_dir<=fat_value==dir_cluster;fat_self_walk<=fat_value==walk_cluster;state<=after_fat;end
     ROOT_NEXT:begin
-     if(fat_value>=32'h0ffffff8) begin sort_pass<=0;sort_index<=0;state<=SORT_READ;end
-     else if(!legal_cluster || dir_hops==65535 || fat_value==dir_cluster) begin mount_error<=1;error_code<=4;state<=FAILED;end
+     if(fat_eoc) begin sort_pass<=0;sort_index<=0;state<=SORT_READ;end
+     else if(!legal_cluster || dir_hops==65535 || fat_self_dir) begin mount_error<=1;error_code<=4;state<=FAILED;end
      else begin dir_cluster<=fat_value;dir_sector_offset<=0;dir_hops<=dir_hops+1'b1;state<=DIR_ISSUE;end
     end
     SORT_READ:begin
@@ -236,8 +245,19 @@ module fat32_store(
      state<=SORT_READ;
     end
     EMIT:begin
-     if(emit_index<count) begin scan_found_sector<={12'd0,emit_index[4:0],15'd0};scan_found_valid<=1;emit_index<=emit_index+1'b1;end
+     if(emit_index<count) begin catalogue_addr<=emit_index[4:0];state<=EMIT_WAIT;end
      else begin scan_done<=1;state<=READY;end
+    end
+    EMIT_WAIT:state<=EMIT_SEND;
+    EMIT_SEND:begin
+     scan_found_sector<={12'd0,emit_index[4:0],15'd0};scan_found_animation<=(catalogue_q[87:64]==24'h414e4d || catalogue_q[87:64]==24'h41564d);scan_found_audio<=(catalogue_q[87:64]==24'h574156 || catalogue_q[87:64]==24'h41564d);
+     scan_found_valid<=1;
+     if(ENABLE_MENU)begin emit_name<=catalogue_q[151:64];emit_name_pos<=0;emit_name_length<=basename_length(catalogue_q[151:64]);state<=EMIT_NAME;end
+     else begin emit_index<=emit_index+1'b1;state<=EMIT;end
+    end
+    EMIT_NAME:begin
+     scan_name_valid<=1;scan_name_addr<={emit_index[4:0],emit_name_pos};scan_name_data<=emit_name_pos==11 ? {2'd0,emit_name_length,scan_found_audio,scan_found_animation}:emit_name[87:80];emit_name<=emit_name<<8;
+     if(emit_name_pos==11)begin emit_index<=emit_index+1'b1;state<=EMIT;end else emit_name_pos<=emit_name_pos+1'b1;
     end
     READY:if(file_req) begin
      catalogue_addr<=file_addr[19:15];requested_file<=file_addr[19:15];file_sector<={17'd0,file_addr[14:0]};
@@ -250,7 +270,7 @@ module fat32_store(
      target_index<=file_sector>>spc_shift;
      if(chain_valid && chain_file==requested_file) state<=SEEK;
      else begin
-      chain_valid<=0;chain_file<=requested_file;walk_cluster<=catalogue_q[63:32];chain_index<=0;
+      hot_valid0<=0;hot_valid1<=0;chain_valid<=0;chain_file<=requested_file;walk_cluster<=catalogue_q[63:32];chain_index<=0;
       state<=FILE_SIZE;
      end
     end
@@ -262,16 +282,30 @@ module fat32_store(
      else begin fat_cluster<=walk_cluster;after_fat<=BUILD_NEXT;state<=FAT_GET;end
     end
     BUILD_NEXT:begin
-     if(!legal_cluster || fat_value==walk_cluster) begin read_error<=1;error_code<=6;state<=DRAIN;end
+     if(!legal_cluster || fat_self_walk) begin read_error<=1;error_code<=6;state<=DRAIN;end
      else begin walk_cluster<=fat_value;chain_index<=chain_index+1'b1;state<=BUILD;end
     end
     SEEK:begin
      if(file_sector>=sector_count || target_index>=chain_length) begin read_error<=1;error_code<=7;state<=DRAIN;end
-     else begin walk_index<={target_index[15:4],4'd0};state<=SEEK_LOOK;end
+     else begin walk_index<={target_index[15:4],4'd0};state<=SEEK_CACHE;end
+    end
+    SEEK_CACHE:begin
+     hot_hit0<=hot_valid0 && (target_index==hot_index0 || target_index==hot_index0+16'd1);
+     hot_hit1<=hot_valid1 && (target_index==hot_index1 || target_index==hot_index1+16'd1);
+     state<=HOT_LOOKUP;
+    end
+    HOT_LOOKUP:begin
+     if(hot_hit0) begin walk_index<=hot_index0;walk_cluster<=hot_cluster0;hot_slot<=0;state<=SEEK_STEP;end
+     else if(hot_hit1) begin walk_index<=hot_index1;walk_cluster<=hot_cluster1;hot_slot<=1;state<=SEEK_STEP;end
+     else begin hot_slot<=hot_victim;state<=SEEK_LOOK;end
     end
     SEEK_LOOK:begin walk_cluster<={4'd0,checkpoint_q};state<=SEEK_STEP;end
     SEEK_STEP:begin
-     if(walk_index==target_index) begin cluster_delta<=(walk_cluster-2)<<spc_shift;state<=DATA_ISSUE;end
+     if(walk_index==target_index) begin
+      if(hot_slot) begin hot_valid1<=1;hot_index1<=target_index;hot_cluster1<=walk_cluster;end
+      else begin hot_valid0<=1;hot_index0<=target_index;hot_cluster0<=walk_cluster;end
+      hot_victim<=~hot_slot;
+      cluster_delta<=(walk_cluster-2)<<spc_shift;state<=DATA_ISSUE;end
      else begin fat_cluster<=walk_cluster;after_fat<=SEEK_NEXT;state<=FAT_GET;end
     end
     SEEK_NEXT:begin

@@ -10,3 +10,13 @@ __pycache__/
 *.pyc
 *.vvp
 /work/
+
+# Personal media and generated conversion outputs
+/audio_assets/
+/av_assets/
+*.mp3
+*.mp4
+*.WAV
+*.AVM
+*.ANM
+/animation_assets/

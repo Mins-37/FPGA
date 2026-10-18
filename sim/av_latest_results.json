@@ -1,0 +1,47 @@
+[
+  {
+    "name": "metadata0",
+    "passed": true,
+    "output": "PASS: ANM frame 2/3 fps=10, 307200 RGB565-expanded pixels, 76 sector reads, stalls=1, byte_gap=1, cycles=1799337\nwork\\av-project\\sim\\tb_av_header.sv:78: $finish called at 17993370000 (1ps)\n"
+  },
+  {
+    "name": "metadata5",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nwork\\av-project\\sim\\tb_av_header.sv:73: $finish called at 10410000 (1ps)\n"
+  },
+  {
+    "name": "metadata6",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nwork\\av-project\\sim\\tb_av_header.sv:73: $finish called at 10410000 (1ps)\n"
+  },
+  {
+    "name": "metadata7",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nwork\\av-project\\sim\\tb_av_header.sv:73: $finish called at 10410000 (1ps)\n"
+  },
+  {
+    "name": "metadata8",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nwork\\av-project\\sim\\tb_av_header.sv:73: $finish called at 10410000 (1ps)\n"
+  },
+  {
+    "name": "metadata9",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nwork\\av-project\\sim\\tb_av_header.sv:73: $finish called at 10410000 (1ps)\n"
+  },
+  {
+    "name": "av_osd",
+    "passed": true,
+    "output": "PASS VID 08/08 PLAY/PAUSE OSD with black audio-only background\nwork\\av-project\\sim\\tb_av_osd.sv:11: $finish called at 170000 (1ps)\n"
+  },
+  {
+    "name": "av_to_av_switch",
+    "passed": true,
+    "output": "PROGRESS cycles=999995 status=01040 pixels=155614 commits=0 FAT=19 BMP=0 ANM=11\nPROGRESS cycles=1999995 status=01040 pixels=307200 commits=0 FAT=19 BMP=0 ANM=0\nANM commit 1: frame 0, blank 5\nPROGRESS cycles=2999995 status=1f840 pixels=163206 commits=1 FAT=19 BMP=0 ANM=11\nPROGRESS cycles=3999995 status=1f840 pixels=15245 commits=1 FAT=19 BMP=0 ANM=11\nPROGRESS cycles=4999995 status=1f840 pixels=180946 commits=1 FAT=19 BMP=0 ANM=11\nPROGRESS cycles=5999995 status=1f840 pixels=307200 commits=1 FAT=19 BMP=0 ANM=0\nANM commit 2: frame 0, blank 15\nPASS AVM-to-AVM handoff: cancel prefetch, reset audio timeline, no new audio before initial frame commit, exact PCM restart and pause/resume\nwork\\av-project\\sim\\tb_av_switch.sv:84: $finish called at 67166741000 (1ps)\n"
+  },
+  {
+    "name": "av_integration_25mhz_spi_48khz_pcm",
+    "passed": true,
+    "output": "PROGRESS cycles=999995 status=01040 pixels=199681 commits=0 FAT=19 BMP=19 ANM=0\nPROGRESS cycles=1999995 status=03040 pixels=10240 commits=0 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=2999995 status=03040 pixels=56320 commits=0 FAT=10 BMP=0 ANM=8\nPROGRESS cycles=3999995 status=03040 pixels=110080 commits=0 FAT=10 BMP=0 ANM=8\nPROGRESS cycles=4999995 status=03040 pixels=192000 commits=0 FAT=10 BMP=0 ANM=8\nPROGRESS cycles=5999995 status=03040 pixels=248320 commits=0 FAT=10 BMP=0 ANM=8\nANM commit 1: frame 0, blank 4\nPROGRESS cycles=6999995 status=1e841 pixels=307200 commits=1 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=7999995 status=1e841 pixels=307200 commits=1 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=8999995 status=1f841 pixels=43520 commits=1 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=9999995 status=1f841 pixels=99840 commits=1 FAT=19 BMP=0 ANM=9\nPROGRESS cycles=10999995 status=1f841 pixels=157058 commits=1 FAT=19 BMP=0 ANM=10\nPROGRESS cycles=11999995 status=1f841 pixels=204800 commits=1 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=12999995 status=1f841 pixels=281600 commits=1 FAT=10 BMP=0 ANM=8\nPROGRESS cycles=13999995 status=1f841 pixels=307200 commits=1 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=14999995 status=1f841 pixels=307200 commits=1 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=15999995 status=1f841 pixels=307200 commits=1 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=16999995 status=1f841 pixels=307200 commits=1 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=17999995 status=1f841 pixels=307200 commits=1 FAT=19 BMP=0 ANM=0\nANM commit 2: frame 1, blank 11\nPROGRESS cycles=18999995 status=1e841 pixels=307200 commits=2 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=19999995 status=1e841 pixels=307200 commits=2 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=20999995 status=1f841 pixels=48640 commits=2 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=21999995 status=1f841 pixels=97280 commits=2 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=22999995 status=1f841 pixels=153600 commits=2 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=23999995 status=1f841 pixels=215040 commits=2 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=24999995 status=1f841 pixels=276480 commits=2 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=25999995 status=1f841 pixels=307200 commits=2 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=26999995 status=1f841 pixels=307200 commits=2 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=27999995 status=1f841 pixels=307200 commits=2 FAT=19 BMP=0 ANM=0\nANM commit 3: frame 0, blank 17\nPROGRESS cycles=28999995 status=1e841 pixels=307200 commits=3 FAT=10 BMP=0 ANM=0\nPROGRESS cycles=29999995 status=1e841 pixels=307200 commits=3 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=30999995 status=1f841 pixels=51200 commits=3 FAT=10 BMP=0 ANM=8\nPROGRESS cycles=31999995 status=1f841 pixels=117760 commits=3 FAT=10 BMP=0 ANM=8\nPROGRESS cycles=32999995 status=1f841 pixels=171520 commits=3 FAT=10 BMP=0 ANM=8\nPROGRESS cycles=33999995 status=1f841 pixels=211418 commits=3 FAT=19 BMP=0 ANM=12\nPROGRESS cycles=34999995 status=1f841 pixels=286720 commits=3 FAT=10 BMP=0 ANM=8\nPROGRESS cycles=35999995 status=1f841 pixels=307200 commits=3 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=36999995 status=1f841 pixels=307200 commits=3 FAT=28 BMP=0 ANM=0\nPROGRESS cycles=37999995 status=1f841 pixels=307200 commits=3 FAT=19 BMP=0 ANM=0\nANM commit 4: frame 1, blank 23\nPROGRESS cycles=38999995 status=1e841 pixels=307200 commits=4 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=39999995 status=1e841 pixels=307200 commits=4 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=40999995 status=1f041 pixels=43520 commits=4 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=41999995 status=1f041 pixels=102400 commits=4 FAT=10 BMP=0 ANM=8\nPROGRESS cycles=42999995 status=1f041 pixels=177212 commits=4 FAT=19 BMP=0 ANM=13\nPROGRESS cycles=43999995 status=1f041 pixels=235520 commits=4 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=44999995 status=1f041 pixels=35230 commits=4 FAT=19 BMP=18 ANM=0\nPROGRESS cycles=45999995 status=1f041 pixels=242919 commits=4 FAT=19 BMP=19 ANM=0\nPROGRESS cycles=46999995 status=1f041 pixels=307200 commits=4 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=47999995 status=03040 pixels=30720 commits=4 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=48999995 status=03040 pixels=81920 commits=4 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=49999995 status=03040 pixels=140800 commits=4 FAT=19 BMP=0 ANM=7\nPROGRESS cycles=50999995 status=03040 pixels=215040 commits=4 FAT=28 BMP=0 ANM=8\nPROGRESS cycles=51999995 status=03040 pixels=287217 commits=4 FAT=19 BMP=0 ANM=14\nPROGRESS cycles=52999995 status=03040 pixels=307200 commits=4 FAT=19 BMP=0 ANM=0\nANM commit 5: frame 0, blank 32\nPROGRESS cycles=53999995 status=1e841 pixels=307200 commits=5 FAT=19 BMP=0 ANM=0\nPROGRESS cycles=54999995 status=1e841 pixels=307200 commits=5 FAT=19 BMP=0 ANM=0\nPASS AVM: exact RGB and stereo PCM, audio-master timestamp/loop, pause/resume, paused-prefetch KEY2 exit, safe reader handoff and reentry at zero\nwork\\av-project\\sim\\tb_av_player.sv:87: $finish called at 556479261000 (1ps)\n"
+  }
+]

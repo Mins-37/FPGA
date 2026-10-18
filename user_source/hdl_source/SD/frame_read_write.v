@@ -40,6 +40,7 @@ module frame_read_write
 	input[ADDR_BITS - 1:0]           read_addr_1,                // data read module read request base address 1, used when read_addr_index = 1
 	input[ADDR_BITS - 1:0]           read_addr_2,                // data read module read request base address 1, used when read_addr_index = 2
 	input[ADDR_BITS - 1:0]           read_addr_3,                // data read module read request base address 1, used when read_addr_index = 3
+	output wire [1:0]               read_buffer_active,
 	input[1:0]                       read_addr_index,            // select valid base address from read_addr_0 read_addr_1 read_addr_2 read_addr_3
 	input[ADDR_BITS - 1:0]           read_len,                   // data read module read request data length
 	input                            read_en,                    // data read module read request for one data, read_data valid next clock
@@ -68,6 +69,7 @@ module frame_read_write
 	input[ADDR_BITS - 1:0]           write_addr_3,               // data write module write request base address 1, used when write_addr_index = 3
 	input[1:0]                       write_addr_index,           // select valid base address from write_addr_0 write_addr_1 write_addr_2 write_addr_3
 	input[ADDR_BITS - 1:0]           write_len,                  // data write module write request data length
+	output wire                      write_ready,
 	input                            write_en,                   // data write module write request for one data
 	input[WRITE_DATA_BITS - 1:0]     write_data                 // write data
 
@@ -81,6 +83,8 @@ wire								 App_wr_busy;
 wire                                 read_fifo_aclr;             // fifo Asynchronous clear
 wire                                 write_fifo_aclr;            // fifo Asynchronous clear
 
+wire write_fifo_full,write_fifo_afull;
+assign write_ready=!(write_fifo_full || write_fifo_afull || write_fifo_aclr);
 wire O_wr_busy;
 wire O_rd_busy;
 
@@ -98,7 +102,8 @@ wfifo_32_32_512 write_buf
 	.re                      	(App_wr_en        		  ),          // Read Request
 	.di                       	(write_data               ),          // Input Data
 	.empty_flag                 (                         ),          // Read side Empty flag
-	.full_flag                  (                         ),          // Write side Full flag
+	.full_flag                  (write_fifo_full          ),
+	.afull                      (write_fifo_afull         ),          // Write side Full flag
 	.wrusedw                	(              	  		  ),          // Read Used Words
 	.rdusedw                	(rdusedw                  ),          // Write Used Words
 	.dout                       (App_wr_din		          )
@@ -184,7 +189,8 @@ frame_fifo_read_m0
 	.read_addr_1                (read_addr_1              ),
 	.read_addr_2                (read_addr_2              ),
 	.read_addr_3                (read_addr_3              ),
-	.read_addr_index            (read_addr_index          ),    
+	.read_addr_index            (read_addr_index          ),
+	.read_buffer_active         (read_buffer_active       ),    
 	.read_len                   (read_len                 ),
 	.fifo_aclr                  (read_fifo_aclr           ),
 	.wrusedw                	(wrusedw                  )

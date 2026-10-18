@@ -1,0 +1,5 @@
+{
+  "name": "progress_osd",
+  "passed": true,
+  "output": "PASS time label tenths/minutes, frame latch, progress fill/track/border, pause color, inactive hide\nwork\\player-plus\\sim\\tb_progress_osd.sv:18: $finish called at 2240000 (1ps)\n"
+}

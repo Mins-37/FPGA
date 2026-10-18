@@ -29,7 +29,7 @@ with tempfile.TemporaryDirectory(prefix='fat32_rtl_') as tmp:
   output=simulate('tb_fat32',[f'+LBAS={rel}/lbas.hex',f'+BYTES={rel}/bytes.hex',f'+REQ={rel}/requests.hex',f'+N={m["n"]}',f'+COUNT={m["count"]}',f'+NREQ={m["requests"]}',f'+MERR={int(m["mount_error"])}',f'+RERR={int(m["read_error"])}'])
   results.append(dict(name=d.name,passed=True,output=output));print(output.strip(),flush=True)
  if not a.unit_only:
-  compile('tb_fat_player',[here/'tb_fat_player.sv',hdl/'SD/fat32_store.v',hdl/'SD/sd_card_bmp.v',hdl/'SD/bmp_read.v'])
+  compile('tb_fat_player',[here/'tb_fat_player.sv',hdl/'SD/fat32_store.v',hdl/'SD/sd_card_bmp.v',hdl/'SD/bmp_read.v',hdl/'SD/anm_read.v',hdl/'wav_read.v',hdl/'cdc_status_bus.v'])
   output=simulate('tb_fat_player',['+LBAS=work/fat_tests/integration/lbas.hex','+BYTES=work/fat_tests/integration/bytes.hex','+N=203'])
   results.append(dict(name='player_6_frames',passed=True,output=output));print(output.strip(),flush=True)
  compile('tb_fat_osd',[here/'tb_fat_osd.sv',hdl/'video_osd.v'])

@@ -1,0 +1,4 @@
+{
+  "passed": true,
+  "output": "PASS clean long/release/one-shot, short next, menu priority/late chord/release order, menu navigation, volume/mute priority, previous, bounce\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_clean_controls.sv:34: $finish called at 13620000 (1ps)\n"
+}

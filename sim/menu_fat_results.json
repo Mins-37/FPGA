@@ -1,0 +1,42 @@
+[
+  {
+    "name": "empty",
+    "passed": true,
+    "output": "PASS: sorted SFN+length+type for 0 files, 0 real fragmented-sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_fat.sv:70: $finish called at 20730000 (1ps)\n"
+  },
+  {
+    "name": "one",
+    "passed": true,
+    "output": "PASS: sorted SFN+length+type for 1 files, 2 real fragmented-sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_fat.sv:70: $finish called at 147110000 (1ps)\n"
+  },
+  {
+    "name": "five",
+    "passed": true,
+    "output": "PASS: sorted SFN+length+type for 5 files, 2 real fragmented-sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_fat.sv:70: $finish called at 284760000 (1ps)\n"
+  },
+  {
+    "name": "thirtytwo",
+    "passed": true,
+    "output": "PASS: sorted SFN+length+type for 32 files, 2 real fragmented-sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_fat.sv:70: $finish called at 318220000 (1ps)\n"
+  },
+  {
+    "name": "cap",
+    "passed": true,
+    "output": "PASS: sorted SFN+length+type for 32 files, 2 real fragmented-sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_fat.sv:70: $finish called at 287440000 (1ps)\n"
+  },
+  {
+    "name": "audio_fixture",
+    "passed": true,
+    "output": "PASS: sorted SFN+length+type for 2 files, 0 real fragmented-sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_fat.sv:70: $finish called at 31430000 (1ps)\n"
+  },
+  {
+    "name": "animation_fixture",
+    "passed": true,
+    "output": "PASS: sorted SFN+length+type for 2 files, 0 real fragmented-sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_fat.sv:70: $finish called at 31430000 (1ps)\n"
+  },
+  {
+    "name": "plus_switch_fixture",
+    "passed": true,
+    "output": "PASS: sorted SFN+length+type for 2 files, 0 real fragmented-sector requests\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_menu_fat.sv:70: $finish called at 31410000 (1ps)\n"
+  }
+]

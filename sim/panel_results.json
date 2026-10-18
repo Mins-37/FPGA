@@ -1,0 +1,37 @@
+[
+  {
+    "name": "tb_audiofx_overlay",
+    "passed": true,
+    "output": "PASS spectrum panel colors, gaps, grid, frame snapshot/decay, passthrough, volume percent/mute text\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audio-panel\\sim\\tb_audiofx_overlay.sv:25: $finish called at 1090000 (1ps)\n"
+  },
+  {
+    "name": "tb_audio_waveform",
+    "passed": true,
+    "output": "PASS: full captures, mirrored BRAMs, exact trace pixels/read latency, frame-only commit, write/display bank separation, muted/silent waveform clears\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audio-panel\\sim\\tb_audio_waveform.sv:41: $finish called at 12083480000 (1ps)\n"
+  },
+  {
+    "name": "tb_waveform_pipeline",
+    "passed": true,
+    "output": "PASS synchronous waveform RAM compositor: 128 random RGB/DE/VS inputs share exact two-stage latency\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audio-panel\\sim\\tb_waveform_pipeline.sv:16: $finish called at 1326000 (1ps)\n"
+  },
+  {
+    "name": "tb_progress_osd",
+    "passed": true,
+    "output": "PASS time label tenths/minutes, frame latch, progress fill/track/border, pause color, inactive hide\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audio-panel\\sim\\tb_progress_osd.sv:18: $finish called at 2240000 (1ps)\n"
+  },
+  {
+    "name": "tb_av_osd",
+    "passed": true,
+    "output": "PASS VID 08/08 PLAY/PAUSE OSD with black audio-only background\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audio-panel\\sim\\tb_av_osd.sv:11: $finish called at 170000 (1ps)\n"
+  },
+  {
+    "name": "tb_wav_osd",
+    "passed": true,
+    "output": "PASS WAV 07/07 PLAY/PAUSE OSD with black audio-only background\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audio-panel\\sim\\tb_wav_osd.sv:11: $finish called at 170000 (1ps)\n"
+  },
+  {
+    "name": "tb_animation_overlay",
+    "passed": true,
+    "output": "PASS: ANM PLAY/PAUSE OSD, no per-frame fade, picture fade restored\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-audio-panel\\sim\\tb_animation_overlay.sv:16: $finish called at 390000 (1ps)\n"
+  }
+]

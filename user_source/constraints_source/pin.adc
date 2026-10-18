@@ -66,3 +66,5 @@ set_pin_assignment { sw[1] } { LOCATION = C7; IOSTANDARD = LVCMOS33; PULLTYPE = 
 set_pin_assignment { sw[2] } { LOCATION = C6; IOSTANDARD = LVCMOS33; PULLTYPE = NONE; }
 
 set_pin_assignment { sw[3] } { LOCATION = C5; IOSTANDARD = LVCMOS33; PULLTYPE = NONE; }
+
+set_pin_assignment { key3 } { LOCATION = B1; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; }

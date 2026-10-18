@@ -3,6 +3,7 @@ module top(
     input wire [3:0] sw,
     input                       clk,
     input                       rst_n,
+    input                       key3,           // KEY3: previous media
     input                       key1,           // 手动下一张
     input                       key2,           // 自动播放 开/关
 
@@ -50,7 +51,24 @@ wire de;
 wire [23:0] vout_data_raw;
 wire [23:0] vout_data;
 wire        display_valid;
-wire [13:0] osd_status_sd, osd_status_video;
+wire [16:0] osd_status_sd, osd_status_video;
+wire [23:0] wav_left,wav_right,tone_left,tone_right;wire audio_mode,audio_underrun;reg [1:0] audio_mode_sync;
+ wire [21:0] playback_samples,total_audio_samples;
+ wire [9:0] elapsed_tenths,total_tenths;wire [8:0] progress_fill;wire progress_valid;
+ wire pixel_write_ready;wire [1:0] reader_buffer_active;
+wire clean_toggle;reg clean_mode;reg [1:0] clean_mode_pipe;
+ always @(posedge video_clk or posedge rst_all) begin
+  if(rst_all) begin clean_mode<=0;clean_mode_pipe<=0;end
+  else begin
+   clean_mode_pipe<={clean_mode_pipe[0],clean_mode};
+   if(clean_toggle) clean_mode<=~clean_mode;
+  end
+ end
+ wire menu_toggle,menu_open,player_next_n,player_prev_n,player_auto_n;
+wire [4:0] menu_selected,menu_page,command_index,menu_jump_index;wire command_toggle,command_ack,menu_jump_valid;
+wire menu_name_we;wire [8:0] menu_name_wr_addr,menu_name_rd_addr;wire [7:0] menu_name_wr_data,menu_name_rd_data;
+wire [6:0] menu_catalogue_sd,menu_catalogue_video;
+wire [23:0] menu_rgb;wire menu_vs,menu_de;
 wire [7:0] osd_debug_sd,osd_debug_video;
 wire [23:0] osd_rgb;
 wire osd_de, osd_vs;
@@ -62,7 +80,8 @@ wire waveform_vs,waveform_de;
 wire [23:0] faded_rgb;
 wire faded_vs,faded_de,fade_black;
 
-wire [3:0]  state_code;
+wire [3:0] state_code,state_code_50;
+ cdc_status_bus #(.WIDTH(4)) u_seg_status(.src_clk(sd_card_clk),.src_rst(rst_all),.src_data(state_code),.dst_clk(ext_mem_clk),.dst_rst(rst_all),.dst_data(state_code_50));
 wire [6:0]  seg_data_0;
 
 wire        video_read_req;
@@ -168,12 +187,18 @@ end
 
 // ===================== TF 多图扫描与缓存（双缓冲） =====================
 sd_card_bmp #(
-    .CLK_FREQ_HZ (100_000_000)
+    .CLK_FREQ_HZ (100_000_000),.KEYS_PREDEBOUNCED(1),.ENABLE_MENU(1)
 ) sd_card_bmp_m0(
+    .menu_jump_valid(menu_jump_valid),.menu_jump_index(menu_jump_index),
+    .menu_name_valid(menu_name_we),.menu_name_addr(menu_name_wr_addr),.menu_name_data(menu_name_wr_data),.menu_catalogue(menu_catalogue_sd),
+    .audio_clk(video_clk),.audio_tick(audio_valid),.wav_left(wav_left),.wav_right(wav_right),.audio_mode(audio_mode),.audio_underrun(audio_underrun),
     .clk               (sd_card_clk),
     .rst               (rst_all),
-    .key_next          (key1),
-    .key_auto          (key2),
+    .key_next          (player_next_n),
+    .key_auto          (player_auto_n),.key_prev(player_prev_n),.playback_samples(playback_samples),.total_audio_samples(total_audio_samples),
+    .frame_sync        (vs_0),
+    .pixel_write_ready (pixel_write_ready),
+    .reader_buffer_active(reader_buffer_active),
     .state_code        (state_code),
     .bmp_width         (16'd640),
     .bmp_height        (16'd480),
@@ -189,6 +214,8 @@ sd_card_bmp #(
     .write_req         (sd_card_write_req),
     .write_req_ack     (sd_card_write_req_ack),
     .write_en          (sd_card_write_en),
+
+
     .write_data        (sd_card_write_data),
     .SD_nCS            (sd_ncs),
     .SD_DCLK           (sd_dclk),
@@ -197,13 +224,13 @@ sd_card_bmp #(
 );
 
 seg_decoder seg_decoder_m0(
-    .bin_data          (state_code),
+    .bin_data          (state_code_50),
     .seg_data          (seg_data_0)
 );
 
 seg_scan seg_scan_m0(
-    .clk               (clk),
-    .rst_n             (rst_n),
+    .clk               (ext_mem_clk),
+    .rst_n             (rst_n && !rst_all),
     .seg_sel           (seg_sel),
     .seg_data          (seg_data),
     .seg_data_0        ({1'b1,7'b1111_111}),
@@ -287,6 +314,8 @@ frame_read_write #(
     .write_addr_index  (write_buf_idx),
     .write_len         (FRAME_PIXELS),
     .write_en          (sd_card_write_en),
+    .write_ready       (pixel_write_ready),
+    .read_buffer_active(reader_buffer_active),
     .write_data        (sd_card_write_data)
 );
 
@@ -308,24 +337,44 @@ sdram U3(
 );
 
 // PCM is generated in the pixel domain: no I2S CDC or audio PLL required.
-wire audio_valid;
-wire [23:0] audio_left_data, audio_right_data;
+wire nav_next_n,nav_prev_n,nav_auto_n;wire [3:0] volume_level;wire audio_mute;
+audio_controls #(.ENABLE_CLEAN(1)) u_audio_controls(.clk(video_clk),.rst(rst_all),.key_next(key1),.key_prev(key3),.key_auto(key2),
+ .next_n(nav_next_n),.prev_n(nav_prev_n),.auto_n(nav_auto_n),.volume(volume_level),.mute(audio_mute),.menu_toggle(menu_toggle),.menu_open(menu_open),.clean_toggle(clean_toggle));
+media_menu_control u_menu_control(.clk(video_clk),.rst(rst_all),.toggle(menu_toggle),.next_n(nav_next_n),.prev_n(nav_prev_n),.auto_n(nav_auto_n),
+ .ready(menu_catalogue_video[6]),.count(menu_catalogue_video[5:0]),.current_index(osd_status_video[4:0]),.command_ack(command_ack),
+ .opened(menu_open),.selected(menu_selected),.page_base(menu_page),.player_next_n(player_next_n),.player_prev_n(player_prev_n),.player_auto_n(player_auto_n),.command_toggle(command_toggle),.command_index(command_index));
+media_jump_cdc u_menu_command(.src_clk(video_clk),.src_rst(rst_all),.request(command_toggle),.index(command_index),.acknowledge(command_ack),
+ .dst_clk(sd_card_clk),.dst_rst(rst_all),.valid(menu_jump_valid),.target(menu_jump_index));
+cdc_status_bus #(.WIDTH(7)) u_menu_catalogue(.src_clk(sd_card_clk),.src_rst(rst_all),.src_data(menu_catalogue_sd),.dst_clk(video_clk),.dst_rst(rst_all),.dst_data(menu_catalogue_video));
+media_name_ram u_menu_names(.wr_clk(sd_card_clk),.we(menu_name_we),.wr_addr(menu_name_wr_addr),.wr_data(menu_name_wr_data),.rd_clk(video_clk),.rd_addr(menu_name_rd_addr),.rd_data(menu_name_rd_data));
+wire audio_valid;reg hdmi_audio_valid;reg [23:0] tone_left_d,tone_right_d;
+ always @(posedge video_clk or posedge rst_all) begin
+  if(rst_all) begin audio_mode_sync<=0;hdmi_audio_valid<=0;tone_left_d<=0;tone_right_d<=0;end
+  else begin audio_mode_sync<={audio_mode_sync[0],audio_mode};hdmi_audio_valid<=audio_valid;tone_left_d<=tone_left;tone_right_d<=tone_right;end
+ end
+ wire [23:0] raw_left=audio_mode_sync[1] ? wav_left : tone_left_d;
+ wire [23:0] raw_right=audio_mode_sync[1] ? wav_right : tone_right_d;
+wire [23:0] audio_left_data, audio_right_data;wire output_audio_valid;
+audio_gain u_audio_gain(.clk(video_clk),.rst(rst_all),.sample_valid(hdmi_audio_valid),.left_in(raw_left),.right_in(raw_right),
+ .volume(volume_level),.mute(audio_mute),.out_valid(output_audio_valid),.left_out(audio_left_data),.right_out(audio_right_data));
+wire [63:0] spectrum_levels;wire spectrum_overrun,spectrum_stable;
+audio_spectrum u_audio_spectrum(.clk(video_clk),.rst(rst_all),.sample_valid(output_audio_valid),.pcm(audio_left_data),.levels(spectrum_levels),.overrun(spectrum_overrun),.levels_stable(spectrum_stable));
 wire acr_valid;
 wire [19:0] acr_cts, acr_n;
 reg [1:0] audio_picture_valid;
 always @(posedge video_clk or posedge rst_all) begin
     if (rst_all) audio_picture_valid <= 2'b00;
-    else audio_picture_valid <= {audio_picture_valid[0], display_valid};
+    else audio_picture_valid <= {audio_picture_valid[0], (display_valid || audio_mode)};
 end
 audio_test_pcm u_audio_test_pcm(
     .clk(video_clk), .rst(rst_all | !audio_picture_valid[1]),
     .sample_valid(audio_valid),
-    .left_pcm(audio_left_data), .right_pcm(audio_right_data),
+    .left_pcm(tone_left), .right_pcm(tone_right),
     .acr_valid(acr_valid), .acr_cts(acr_cts), .acr_n(acr_n)
 );
 
 // Stable bundled-data status transfer; no independent synchronization of image bits.
-cdc_status_bus #(.WIDTH(14)) u_osd_status(
+cdc_status_bus #(.WIDTH(17)) u_osd_status(
  .src_clk(sd_card_clk), .src_rst(rst_all), .src_data(osd_status_sd),
  .dst_clk(video_clk), .dst_rst(rst_all), .dst_data(osd_status_video)
 );
@@ -341,29 +390,35 @@ image_adjust u_image_adjust(
 );
 video_fade u_video_fade(
  .clk(video_clk),.rst(rst_all),
- .image_valid(osd_status_video[13]),.load_busy(osd_debug_video[2]),
+ .image_valid(osd_status_video[13]),.bypass(osd_status_video[14] || osd_status_video[15]),.load_busy(osd_debug_video[2]),
  .in_vs(adjusted_vs),.in_de(adjusted_de),.in_rgb(adjusted_rgb),
  .out_vs(faded_vs),.out_de(faded_de),.out_rgb(faded_rgb),.black(fade_black)
 );
-audio_waveform u_audio_waveform(
+audio_waveform #(.ENABLE_CLEAN(1)) u_audio_waveform(.hide_overlays(clean_mode),
  .clk(video_clk),.rst(rst_all),
- .sample_valid(audio_valid),.pcm(audio_left_data),
+ .spectrum_levels(spectrum_levels),.spectrum_stable(spectrum_stable),.sample_valid(output_audio_valid),.pcm(audio_left_data),
  .in_vs(faded_vs),.in_de(faded_de),.in_rgb(faded_rgb),
  .out_vs(waveform_vs),.out_de(waveform_de),.out_rgb(waveform_rgb)
 );
-video_osd u_video_osd(
+media_progress u_media_progress(.clk(video_clk),.rst(rst_all),.active(osd_status_video[15]),
+ .played(playback_samples),.duration(total_audio_samples),.elapsed_tenths(elapsed_tenths),.total_tenths(total_tenths),.fill(progress_fill),.valid(progress_valid));
+video_osd #(.ENABLE_CLEAN(1)) u_video_osd(.hide_overlays(clean_mode_pipe[1]),.volume(volume_level),.muted(audio_mute),.elapsed_tenths(elapsed_tenths),.total_tenths(total_tenths),.progress_fill(progress_fill),.progress_valid(progress_valid),
  .clk(video_clk), .rst(rst_all), .in_vs(waveform_vs), .in_de(waveform_de),
  .in_rgb(waveform_rgb), .status(osd_status_video), .controls(image_controls), .debug_status(osd_debug_video),
  .out_vs(osd_vs), .out_de(osd_de), .out_rgb(osd_rgb)
 );
 
+media_menu_osd u_media_menu(.clk(video_clk),.rst(rst_all),.in_vs(osd_vs),.in_de(osd_de),.in_rgb(osd_rgb),
+ .opened(menu_open),.ready(menu_catalogue_video[6]),.count(menu_catalogue_video[5:0]),.selected(menu_selected),.page_base(menu_page),.current_index(osd_status_video[4:0]),
+ .name_addr(menu_name_rd_addr),.name_data(menu_name_rd_data),.out_vs(menu_vs),.out_de(menu_de),.out_rgb(menu_rgb));
+
 // ===================== RGB/DE 转 AXIS 视频 =====================
 video_rgb_to_axis_640x480 u_video_rgb_to_axis_640x480(
     .I_clk         (video_clk),
     .I_rst         (rst_all),
-    .I_vs          (osd_vs),
-    .I_de          (osd_de),
-    .I_rgb         (osd_rgb),
+    .I_vs          (menu_vs),
+    .I_de          (menu_de),
+    .I_rgb         (menu_rgb),
     .O_video_user  (axis_s_user),
     .O_video_valid (axis_s_valid),
     .O_video_last  (axis_s_last),
@@ -410,7 +465,7 @@ hdmi_1_4b_transmitter_core_wrapper #(
     .I_axis_s_data      (axis_s_data),
     .O_axis_s_ready     (axis_s_ready),
 
-    .I_audio_valid      (audio_valid),
+    .I_audio_valid      (output_audio_valid),
     .I_audio_left_data  (audio_left_data),
     .I_audio_right_data (audio_right_data),
     .I_acr_valid        (acr_valid),

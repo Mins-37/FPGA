@@ -1,0 +1,37 @@
+[
+  {
+    "name": "wav_bad0_gap31",
+    "passed": true,
+    "output": "PASS PCM stereo, sign, 2 loop boundaries, pause/resume, no underrun GAP=31\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_wav.sv:46: $finish called at 48755301000 (1ps)\n"
+  },
+  {
+    "name": "wav_bad0_gap0",
+    "passed": true,
+    "output": "PASS PCM stereo, sign, 2 loop boundaries, pause/resume, no underrun GAP=0\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_wav.sv:46: $finish called at 47964901000 (1ps)\n"
+  },
+  {
+    "name": "wav_bad1_gap31",
+    "passed": true,
+    "output": "PASS invalid WAV 1\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_wav.sv:17: $finish called at 164305000 (1ps)\n"
+  },
+  {
+    "name": "wav_bad2_gap31",
+    "passed": true,
+    "output": "PASS invalid WAV 2\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_wav.sv:17: $finish called at 164305000 (1ps)\n"
+  },
+  {
+    "name": "mixed_wav",
+    "passed": true,
+    "output": "PASS mixed fragmented FAT32 BMP/WAV, PCM loop, pause/resume, retained frame, exit/drain, reentry sample zero\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_audio_player.sv:35: $finish called at 56513621000 (1ps)\n"
+  },
+  {
+    "name": "wav_osd",
+    "passed": true,
+    "output": "PASS WAV 07/07 PLAY/PAUSE OSD with black audio-only background\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_wav_osd.sv:11: $finish called at 170000 (1ps)\n"
+  },
+  {
+    "name": "audio_only",
+    "passed": true,
+    "output": "PASS audio-only FAT32 boot, PCM, black background, pause/resume with one file\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-plus\\sim\\tb_audio_only.sv:32: $finish called at 3328021000 (1ps)\n"
+  }
+]

@@ -1,0 +1,4 @@
+{
+  "passed": true,
+  "output": "PASS full 640x480 clean exact RGB, mid-frame and VS-boundary deferred toggle, normal overlays restored, unchanged RGB/DE/VS latency (614400 pixels)\nC:\\Users\\Lenovo\\.codex\\.chatgpt-projects\\g-p-6ac7a7579e1081918257e7e78d0b755c\\work\\player-clean-mode\\sim\\tb_clean_video.sv:34: $finish called at 12443330000 (1ps)\n"
+}

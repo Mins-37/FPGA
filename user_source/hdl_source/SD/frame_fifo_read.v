@@ -34,6 +34,7 @@ module frame_fifo_read
 	input[ADDR_BITS - 1:0]           read_addr_1,                // data read module read request base address 1, used when read_addr_index = 1
 	input[ADDR_BITS - 1:0]           read_addr_2,                // data read module read request base address 1, used when read_addr_index = 2
 	input[ADDR_BITS - 1:0]           read_addr_3,                // data read module read request base address 1, used when read_addr_index = 3
+	output reg [1:0]                 read_buffer_active,
 	input[1:0]                       read_addr_index,            // select valid base address from read_addr_0 read_addr_1 read_addr_2 read_addr_3
 	input[ADDR_BITS - 1:0]           read_len,                   // data read module read request data length
 	output reg                       fifo_aclr,                  // to fifo asynchronous clear
@@ -68,6 +69,10 @@ reg App_rd_en_r;
 reg App_rd_en_d0;
 
 
+always @(posedge mem_clk or posedge rst) begin
+ if(rst) read_buffer_active<=0;
+ else if(state==S_ACK) read_buffer_active<=read_addr_index_d1;
+end
 wire rd_vld;
 reg [3:0] rd_delay;
 

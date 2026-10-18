@@ -250,30 +250,33 @@
                     <File Path="../user_source/hdl_source/audio_test_pcm.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&amp;R" Val="true"/>
+                    <Attr Name="UsedInP&R" Val="true"/>
                     <Attr Name="BelongTo" Val="design_1"/>
                     <Attr Name="CompileOrder" Val="50"/>
                 </FileInfo>
             </File>
 <File Path="../user_source/hdl_source/video_osd.v"><FileInfo>
-<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&amp;R" Val="true"/>
+<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/>
 <Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="51"/>
 </FileInfo></File><File Path="../user_source/hdl_source/cdc_status_bus.v"><FileInfo>
-<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&amp;R" Val="true"/>
+<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/>
 <Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="52"/>
 </FileInfo></File><File Path="../user_source/hdl_source/image_adjust.v"><FileInfo>
-<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&amp;R" Val="true"/>
+<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/>
 <Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="53"/>
 </FileInfo></File><File Path="../user_source/hdl_source/audio_waveform.v"><FileInfo>
-<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&amp;R" Val="true"/>
+<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/>
 <Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="54"/>
 </FileInfo></File><File Path="../user_source/hdl_source/video_fade.v"><FileInfo>
-<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&amp;R" Val="true"/>
+<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/>
 <Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="55"/>
 </FileInfo></File><File Path="../user_source/hdl_source/SD/fat32_store.v"><FileInfo>
-<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&amp;R" Val="true"/>
+<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/>
 <Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="56"/>
-</FileInfo></File></Verilog>
+</FileInfo></File><File Path="../user_source/hdl_source/SD/anm_read.v"><FileInfo>
+<Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/>
+<Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="57"/>
+</FileInfo></File><File Path="../user_source/hdl_source/wav_read.v"><FileInfo><Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/><Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="99"/></FileInfo></File><File Path="../user_source/hdl_source/media_progress.v"><FileInfo><Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/><Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="100"/></FileInfo></File><File Path="../user_source/hdl_source/audio_controls.v"><FileInfo><Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/><Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="101"/></FileInfo></File><File Path="../user_source/hdl_source/audio_gain.v"><FileInfo><Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/><Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="101"/></FileInfo></File><File Path="../user_source/hdl_source/audio_spectrum.v"><FileInfo><Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/><Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="101"/></FileInfo></File><File Path="../user_source/hdl_source/media_menu_control.v"><FileInfo><Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/><Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="102"/></FileInfo></File><File Path="../user_source/hdl_source/media_menu_osd.v"><FileInfo><Attr Name="UsedInSyn" Val="true"/><Attr Name="UsedInP&R" Val="true"/><Attr Name="BelongTo" Val="design_1"/><Attr Name="CompileOrder" Val="102"/></FileInfo></File></Verilog>
         <ADC_FILE>
             <File Path="../user_source/constraints_source/pin.adc">
                 <FileInfo>

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "frames": 92,
+  "seconds": 9.2,
+  "audio_frames": 441600,
+  "verified_rgb_frames": 92,
+  "exact_pcm_match": true,
+  "header_verified": true,
+  "overwrite_guard": true,
+  "invalid_duration_guard": true,
+  "bytes": 5299756,
+  "sha256": "7bd5736f8e70be1a25388adbfce6eb9527454b0c3cb667ca9220c6427e159bc4"
+}

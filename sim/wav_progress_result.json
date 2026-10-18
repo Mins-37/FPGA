@@ -1,0 +1,5 @@
+{
+  "name": "wav_timeline",
+  "passed": true,
+  "output": "PASS PCM stereo, sign, 2 loop boundaries, pause/resume, no underrun GAP=31\nwork\\player-plus\\sim\\tb_wav_progress.sv:47: $finish called at 48755301000 (1ps)\n"
+}

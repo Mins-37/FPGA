@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "width": 256,
+  "height": 192,
+  "frames": 92,
+  "seconds": 9.2,
+  "verified_frames": 92,
+  "audio_exact_baseline_match": true,
+  "letterbox_verified": true,
+  "low_resolution_compatible": true,
+  "overwrite_and_limits_verified": true,
+  "bytes": 10810924,
+  "sha256": "71bd774804e34bce994ac81c9629b9d6b87b932f7b89913dda76223cc0010aef"
+}

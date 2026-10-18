@@ -1,0 +1,32 @@
+[
+  {
+    "name": "highres_spi",
+    "passed": true,
+    "output": "PASS: 256x192 frame 2/3 fps=10, 307200 RGB565-expanded pixels, 193 sector reads, stalls=1, byte_gap=31, cycles=4938685\nwork\\player-plus\\sim\\tb_highres.sv:78: $finish called at 49386850000 (1ps)\n"
+  },
+  {
+    "name": "highres_first",
+    "passed": true,
+    "output": "PASS: 256x192 frame 0/3 fps=10, 307200 RGB565-expanded pixels, 193 sector reads, stalls=0, byte_gap=0, cycles=1734309\nwork\\player-plus\\sim\\tb_highres.sv:78: $finish called at 17343090000 (1ps)\n"
+  },
+  {
+    "name": "highres_last",
+    "passed": true,
+    "output": "PASS: 256x192 frame 139/140 fps=10, 307200 RGB565-expanded pixels, 193 sector reads, stalls=1, byte_gap=0, cycles=1882038\nwork\\player-plus\\sim\\tb_highres.sv:78: $finish called at 18820380000 (1ps)\n"
+  },
+  {
+    "name": "highres_dimensions",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nwork\\player-plus\\sim\\tb_highres.sv:73: $finish called at 163720000 (1ps)\n"
+  },
+  {
+    "name": "highres_limit",
+    "passed": true,
+    "output": "PASS: invalid animation/header frame rejected\nwork\\player-plus\\sim\\tb_highres.sv:73: $finish called at 163720000 (1ps)\n"
+  },
+  {
+    "name": "highres_abort",
+    "passed": true,
+    "output": "PASS: animation abort releases source and writer\nwork\\player-plus\\sim\\tb_highres.sv:69: $finish called at 387000000 (1ps)\n"
+  }
+]

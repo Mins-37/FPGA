@@ -1,11 +1,11 @@
 `timescale 1ns/1ps
 module tb_fat_player;
 reg clk=0,rst=1,key_next=1,key_auto=1;always #5 clk=~clk;
-wire valid,req,en;wire [31:0] data;wire [1:0] wb,db;wire [13:0] status;wire [7:0] debug;
+wire valid,req,en;wire [31:0] data;wire [1:0] wb,db;wire [14:0] status;wire [7:0] debug;
 reg fin=0,ack=0;reg [7:0] req_pipe=0;
 sd_card_bmp #(.CLK_FREQ_HZ(1000)) dut(.clk(clk),.rst(rst),.key_next(key_next),.key_auto(key_auto),
  .bmp_width(16'd640),.bmp_height(16'd480),.display_valid(valid),.osd_status(status),.osd_debug(debug),.state_code(),
- .write_finish_toggle(fin),.fade_black(1'b1),.write_buf_idx(wb),.disp_buf_idx(db),
+ .write_finish_toggle(fin),.frame_sync(1'b1),.pixel_write_ready(1'b1),.reader_buffer_active(db),.fade_black(1'b1),.write_buf_idx(wb),.disp_buf_idx(db),
  .write_req(req),.write_req_ack(ack),.write_en(en),.write_data(data),.SD_nCS(),.SD_DCLK(),.SD_MOSI(),.SD_MISO(1'b1));
 function integer width(input integer k);case(k) 0:width=32;1:width=96;2:width=48;3:width=64;default:width=17;endcase endfunction
 function integer height(input integer k);case(k) 0:height=24;1:height=54;2:height=80;3:height=48;default:height=11;endcase endfunction

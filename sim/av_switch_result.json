@@ -1,0 +1,5 @@
+{
+  "name": "av_to_av_switch",
+  "passed": true,
+  "output": "PROGRESS cycles=999995 status=01040 pixels=155614 commits=0 FAT=19 BMP=0 ANM=11\nPROGRESS cycles=1999995 status=01040 pixels=307200 commits=0 FAT=19 BMP=0 ANM=0\nANM commit 1: frame 0, blank 5\nPROGRESS cycles=2999995 status=1f840 pixels=163206 commits=1 FAT=19 BMP=0 ANM=11\nPROGRESS cycles=3999995 status=1f840 pixels=15245 commits=1 FAT=19 BMP=0 ANM=11\nPROGRESS cycles=4999995 status=1f840 pixels=180946 commits=1 FAT=19 BMP=0 ANM=11\nPROGRESS cycles=5999995 status=1f840 pixels=307200 commits=1 FAT=19 BMP=0 ANM=0\nANM commit 2: frame 0, blank 15\nPASS AVM-to-AVM handoff: cancel prefetch, reset audio timeline, no new audio before initial frame commit, exact PCM restart and pause/resume\nwork\\av-project\\sim\\tb_av_switch.sv:84: $finish called at 67166741000 (1ps)\n"
+}
